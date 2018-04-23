@@ -4,7 +4,7 @@
             {"name":"Bitcoin",       "group":1},
             {"name":"Etheruem", "group":2},
             {"name":"TRX",    "group":3},
-            {"name":"IOTA",    "group":3}
+            {"name":"IOTA",    "group":4}
         ],
     "links":
         [
