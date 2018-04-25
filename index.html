@@ -34,22 +34,43 @@
             
         <div>
             <p class="h3 text text-center" style="margin-top:1.5%">Correlation of Bitcoin and Altcoins</p>    
-            <p class="text text-center" style="margin-top:1.5%">Click on the Play button to view the relationship of altcoins with Bitcoin throughout the selected month.</p>
+            <p class="text text-center" style="margin-top:0%">Click on the Play button to view the relationship of altcoins with Bitcoin throughout the selected month.</p>
         </div>
         
         <div>
             <div class="play-btn-group" style="display:inline-block; margin-top:1%;">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="">Play Visualization</button>
+                <div class="dropdown" style="display:inline-block;margin-right:0%;">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background:#5F9EA0; border:none;" >
+                    Select Month
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-left:10px">Play Visualization</button>
                 <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" style="margin-left:10px;">Stop</button>
             </div>    
         </div>
             
+   
+            
         <div class="svg-con">
             <div class="nd-label" style="position:absolute;left:0;top:0"/>
-                <p class="text" style="margin-left:5%;margin-top:0.5%;position:relative;"> Network Diagram </p>
-                <div class="position:absolute;" style="width:100%; height:15px;background:white;margin-top:-1.5%"></div>
+                <p class="text h6" style="margin-left:5%;margin-top:0.5%;position:relative;">Network Diagram </p>
+                <div class="position:absolute;" style="width:100%; height:15px;background:white;margin-top:-0.8%"></div>
             </div>
-            <svg id="cloud" width="0" height="600" style="position:relative; z-index:1">
+            
+            <div class="loading-animation">             
+                <div class="spinner" style="margin-top:15%">
+                  <div class="cube1"></div>
+                  <div class="cube2"></div>
+                </div>  
+                <p class="text text-center" style="color:white">Please wait while crunch some data.</p>
+            </div> 
+            
+            <svg id="cloud" width="0" height="700" style="position:relative; z-index:1;display:none">
                 <defs>
                     <marker id="arrow" viewbox="0 -5 10 10" refX="18" refY="0"
                             markerWidth="6" markerHeight="6" orient="auto">

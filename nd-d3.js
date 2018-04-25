@@ -1,6 +1,6 @@
 // Dimension of Visualization
 var width = 0;
-var height = 600;
+var height = 700;
 var radius = 55;
 
 
@@ -11,7 +11,8 @@ $( document ).ready(function() {
     
     $("#cloud").attr("width",width);
     
-    
+    $(".loading-animation").css("width",width.toString() + "px");
+    $(".loading-animation").css("height","460px");
     
     var margin_center = ($(window).width() - width) / 2;
     
@@ -138,6 +139,10 @@ var parse_complete = function(results)
         }
      });
     
+    
+    $(".loading-animation").css("display","none");
+    $("#cloud").css("display","initial");
+
     // Draw Force Graph
     init_force();
     
@@ -217,7 +222,24 @@ var init_force = function()
         // Multiply percentage with a scale
         return + Math.sqrt(p_temp * scale / pi);
     })
-    .style("fill", function(d) { return color(d.group); })
+    .style("fill", function(d) 
+    { 
+        if(d.name == "BTC")
+        {
+            return '#0069d9';
+        }else
+        {
+        
+            if(d.percentage > 0)
+            {
+                return '#28a745';
+            }
+            else{
+                return '#dc3545';
+            }
+            
+        }
+    })
     //drag
     .call(force.drag);
 
@@ -227,7 +249,7 @@ var init_force = function()
     var texts = svg.append("g").selectAll("circle.node")
     .data(force.nodes())
     .enter().append("text")
-    .attr("class", "label")   
+    .attr("class", "label")
     .attr("fill","white")
     .text(function(d) { return d.name; })
     .call(force.drag);
