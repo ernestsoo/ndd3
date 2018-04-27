@@ -69,8 +69,8 @@ var parse_complete = function(results)
     
          for (var key in results.data) {
             if (dataset.hasOwnProperty(key)) {
-                console.log(dataset[key].slug);
-                if((dataset[key].date.toString() == '2016-06-05') && (dataset[key].slug.toString() == (show_coins[temp])))
+                //console.log(dataset[key].date.toString());
+                if((dataset[key].date.toString() == '1/6/2016') && (dataset[key].slug.toString() == (show_coins[temp])))
                 {
           
                     
