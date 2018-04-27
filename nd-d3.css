@@ -17,7 +17,7 @@ circle.node {
 circle.node_invisible {
    /* stroke: #fff;  */
    /* stroke-width: 3px; */
-    width:50px;
+    width:0px;
 }
 
 line.link {
@@ -25,6 +25,12 @@ line.link {
     stroke: #999;
     stroke-opacity: 0.6;
 }
+
+line_invisible.link {
+    stroke-width: 0px;
+
+}
+
 
 
 

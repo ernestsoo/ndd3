@@ -1,6 +1,6 @@
 // Dimension of Visualization
 var width = 0;
-var height = 700;
+var height = 600;
 var radius = 55;
 
 
@@ -70,7 +70,7 @@ var parse_complete = function(results)
          for (var key in results.data) {
             if (dataset.hasOwnProperty(key)) {
                 console.log(dataset[key].slug);
-                if((dataset[key].date.toString() == '2016-06-01') && (dataset[key].slug.toString() == (show_coins[temp])))
+                if((dataset[key].date.toString() == '2016-06-05') && (dataset[key].slug.toString() == (show_coins[temp])))
                 {
           
                     
@@ -199,7 +199,31 @@ var init_force = function()
     var links = svg.append("g").selectAll("line.link")
     .data(force.links())
     .enter().append("line")
-    .attr("class", "link");
+    .attr("class", function(d)
+          {console.log("lineeee"); 
+           console.log(d.source.percentage); 
+           
+           var bool_btc = false;
+           var bool_source = false;
+           
+           if(d.target.percentage > 0)
+           {
+               bool_btc = true;
+           }
+           
+            
+           if(d.source.percentage > 0)
+           {
+               bool_source = true;
+           }
+           
+           if(bool_btc == bool_source)
+           {
+               return "link";
+           }else{
+               return null;
+           }
+    });
 
 
     var nodes = svg.append("g").selectAll("circle.node")
