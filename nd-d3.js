@@ -1,6 +1,6 @@
 // Dimension of Visualization
 var width = 0;
-var height = 600;
+var height = 900;
 var radius = 55;
 
 
@@ -289,21 +289,30 @@ var link_distance = function(d)
 
 // global variable to be used by init and update function
 var force = d3.layout.force();
-
+var force1 = d3.layout.force();
 
 
 // Encapsulated Function to start force graph
 var init_force = function(dataset)
 {
-
     // Set up force graph
     force
-        .charge(-300)
-        .gravity(.05)
+        .charge(-1000)
+        .gravity(0)
+        .friction(0.5)
         .linkDistance(link_distance)
         .size([width, height])
         .nodes(dataset[0].nodes)
         .links(dataset[0].links)
+        .start();
+
+    force1
+        .charge(-100)
+        .gravity(0)
+        .linkDistance(link_distance)
+        .size([width, height])
+        .nodes(dataset[1].nodes)
+        .links(dataset[1].links)
         .start();
 
 
@@ -479,7 +488,7 @@ var init_force = function(dataset)
     //drag
     .call(force.drag);
 
-    $("#circle-0").css("fill","black");
+
 
     // each node with coin/token's name
     var texts = svg.append("g").selectAll("circle.node")
@@ -501,42 +510,133 @@ var init_force = function(dataset)
     .text(function(d) {
         var n = parseFloat(d.percentage).toFixed(2);
         return n.toString() + "%" })
-    .call(force.drag);
+            .call(force.drag);
 
 
 
-    force.on("tick", function() {
-        links.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
+            force.on("tick", function() {
+                links.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
 
-     /*   nodes.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; }); */
+             /*   nodes.attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; }); */
 
-        nodes.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+                nodes.attr("cx", function(d) {
+                  if(d.name=="BTC")
+                  {
+                    return d.x = width / 2;
+                  }else{
+                    return d.x = Math.max(radius, Math.min(width - radius, d.x));
+                  }
+                })
+                .attr("cy", function(d) {
 
-        texts.attr("x", function(d) { return d.x - 11; })
-        .attr("y", function(d) { return d.y - 4; });
+                  if(d.name=="BTC")
+                  {
+                    return d.y = height / 2;
+                  }else{
+                    return d.y = Math.max(radius, Math.min(height - radius, d.y));
+                  }
 
-        percentages.attr("x", function(d) { return d.x - 13; })
-        .attr("y", function(d) { return d.y + 7; });
+                });
 
-        });
+                texts.attr("x", function(d) { return d.x - 11; })
+                .attr("y", function(d) { return d.y - 4; });
+
+                percentages.attr("x", function(d) { return d.x - 13; })
+                .attr("y", function(d) { return d.y + 7; });
+
+                });
+        /*
 
         setTimeout(function(){
+          update_force(1);
+
+        nodes.transition().delay(1000).attr("cx", function(d) {
+              return 500;
+          })
+          .attr("cy", function(d) {
+              return 500;
+
+          });
+
+
+        },1100);*/
+
+
+         setTimeout(function(){
+           update_force(1);
+         },1100);
+
+         setTimeout(function(){
+           update_force(2);
+         },2200);
+
+         setTimeout(function(){
+           update_force(3);
+         },3300);
+
+         setTimeout(function(){
+           update_force(4);
+         },4400);
+
+         setTimeout(function(){
+           update_force(5);
+         },5500);
+
+
+
+
+
+       function update_force(index){
           force
-            .nodes(json_obj[1].nodes)
-            .links(json_obj[1].links)
-            .linkDistance(200).start();
+            .linkDistance(function(d,i){
+              return 100 + (Math.log(1+json_obj[index].links[i].value) * 100);
+            }).start();
+
+          // Update and Transition Nodes
+          for (var i=0; i< json_obj[index].nodes.length; i++)
+          {
+
+            var p_temp = json_obj[index].nodes[i].percentage;
+            var pi = 3.14159;
+            var scale = 5000;
+
+            if (p_temp < 0)
+            {
+                p_temp = 0 - p_temp;
+            }
 
 
-          nodes
-            .data(force.nodes());
+            d3.select("#circle-"+i.toString()).attr("r",Math.sqrt(p_temp * scale / pi));
+          }
 
-          links
-            .data(force.links());
-        },1000);
+          // Update and Transition Links
+          for (var i=0; i< json_obj[index].links.length; i++)
+          {
+                  alert(called)
+            if(json_obj[index].links[i].name == "BTC")
+            {
+
+
+                d3.select("#circle-"+i.toString()).attr("class","class-blue");
+            }else
+            {
+
+                if(json_obj[index].links[i].percentage > 0)
+                {
+                      d3.select("#circle-"+i.toString()).attr("class","class-blue");
+                }
+                else{
+                      d3.select("#circle-"+i.toString()).attr("class","class-red");
+                }
+
+            }
+          }
+
+
+        };
 
 }

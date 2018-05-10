@@ -7,6 +7,30 @@
 }
 
 
+.class-blue
+{
+    fill: '#0069d9' !important;
+}
+
+.class-red
+{
+    fill: '#dc3545' !important;
+}
+
+.class-green
+{
+    fill: '#28a745' !important;
+}
+
+circle
+{
+  -webkit-transition: r 1s ease-out, fill 1s ease-out;
+  -moz-transition: r 1s ease-out, fill 1s ease-out;
+  -o-transition: r 1s ease-out, fill 1s ease-out;
+  transition: r 1s ease-out, fill 1s ease-out;
+}
+
+
 circle.node {
    /* stroke: #fff;  */
    /* stroke-width: 3px; */
@@ -18,6 +42,17 @@ circle.node_invisible {
    /* stroke: #fff;  */
    /* stroke-width: 3px; */
     width:0px;
+}
+
+
+line
+{
+
+  -moz-transition: all 1s ease-out;
+  -webkit-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+
 }
 
 line.link {
