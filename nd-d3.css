@@ -24,6 +24,11 @@ line.link {
     stroke-width: 2px;
     stroke: #999;
     stroke-opacity: 0.6;
+
+    -webkit-transition: all 2s ease-out;
+   -moz-transition: all 2s ease-out;
+   -o-transition: all 2s ease-out;
+   transition: all 2s ease-out;
 }
 
 line_invisible.link {
@@ -43,14 +48,14 @@ text.label {
      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
      font-size:9.5px;
      font-weight:bold;
-     
+
    /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff; */
 }
 
 text.percentage {
   /*  font: 10px sans-serif; */
      color: white;
-     
+
      font-size:9.5px;
      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
@@ -59,7 +64,7 @@ text.percentage {
 .svg-con
 {
   display: inline-block;
-  position: relative;    
+  position: relative;
   margin-top:35px;
 }
 
@@ -105,7 +110,7 @@ text.percentage {
   position: absolute;
   top: 0;
   left: 0;
-  
+
   -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
   animation: sk-cubemove 1.8s infinite ease-in-out;
 }
@@ -123,21 +128,20 @@ text.percentage {
 }
 
 @keyframes sk-cubemove {
-  25% { 
+  25% {
     transform: translateX(42px) rotate(-90deg) scale(0.5);
     -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5);
-  } 50% { 
+  } 50% {
     transform: translateX(42px) translateY(42px) rotate(-179deg);
     -webkit-transform: translateX(42px) translateY(42px) rotate(-179deg);
-  } 50.1% { 
+  } 50.1% {
     transform: translateX(42px) translateY(42px) rotate(-180deg);
     -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg);
-  } 75% { 
+  } 75% {
     transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
     -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
-  } 100% { 
+  } 100% {
     transform: rotate(-360deg);
     -webkit-transform: rotate(-360deg);
   }
 }
-
