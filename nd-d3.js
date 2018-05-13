@@ -1,6 +1,6 @@
 // Dimension of Visualization
 var width = 0;
-var height = 900;
+var height = 750;
 var radius = 55;
 
 
@@ -39,7 +39,13 @@ $( document ).ready(function() {
     $('.app-tools').css("margin-left",tools_margin_left.toString()+"px");
 
     $('#settings').css("left",title_margin_center.toString()+"px");
-    title_margin_center = title_margin_center + 300;
+    title_margin_center = title_margin_center + 450;
+
+    $('#tutorial-0').css("top","20px");
+    $('#tutorial-1').css("top","20px");
+    $('#tutorial-2').css("top","20px");
+    $('#tutorial-3').css("top","20px");
+    $('#tutorial-4').css("top","20px");
 
     $('#tutorial-0').css("left",title_margin_center.toString()+"px");
 
@@ -49,7 +55,7 @@ $( document ).ready(function() {
 
     $('#tutorial-3').css("left",title_margin_center.toString()+"px");
 
-    title_margin_center = title_margin_center + 110;
+
 
     $('#tutorial-4').css("left",title_margin_center.toString()+"px");
 
@@ -143,26 +149,33 @@ var close_settings = function()
 
 var up_date = function()
 {
+
+  date_array_counter = date_array_counter + 1;
   if(date_array_counter < 5)
   {
-    date_array_counter = date_array_counter + 1;
+
     year = year_array[date_array_counter];
     month = month_array[date_array_counter];
 
     change_date();
+  }else {
+    date_array_counter = date_array_counter - 1;
   }
 }
 
 
 var down_date = function()
 {
+    date_array_counter = date_array_counter - 1;
     if(date_array_counter > -1)
     {
-      date_array_counter = date_array_counter - 1;
+
       year = year_array[date_array_counter];
       month = month_array[date_array_counter];
 
       change_date();
+    }else {
+      date_array_counter = date_array_counter + 1;
     }
 }
 
@@ -177,6 +190,8 @@ var change_date = function()
 
     $(".loading-animation").css("display","initial");
     $("#cloud").css("display","none");
+
+    $(".animation-date").text("1 "+month+" "+year);
 
     json_obj = [];
 
@@ -418,6 +433,8 @@ var parse_new_complete = function(results)
             $("#cloud1").css("display","none");
             $("#cloud").css("z-index","1000001");
             $(".svg-con").css("z-index","1000001");
+
+            force1.stop();
         }
 
 
@@ -956,7 +973,7 @@ var init_force = function(dataset)
 
         },1100);*/
 
-        var link_tut = 200;
+        var link_tut = 300;
 
 
         setInterval(function(){
@@ -968,12 +985,12 @@ var init_force = function(dataset)
 
             force1.linkDistance(link_tut).start();
 
-            if(link_tut == 200)
+            if(link_tut == 300)
             {
-              link_tut = 100;
+              link_tut = 150;
             }else {
 
-                link_tut = 200;
+                link_tut = 300;
 
 
             }
@@ -1043,7 +1060,7 @@ var init_force = function(dataset)
                     update_force(animation_counter.toString());
                     var temp = animation_counter + 1;
 
-                    $('.animation-date').text(temp.toString()+" Jan 2018");
+                    $('.animation-date').text(temp.toString()+" "+month+" 2018");
 
                      animation_counter = animation_counter + 1;
                 }
@@ -1054,7 +1071,7 @@ var init_force = function(dataset)
                     animation_counter = 1;
                     animation_stop_bool = false;
 
-                    $('.animation-date').text("27 Jan 2018");
+                    $('.animation-date').text("1 "+month+" "+year);
                 }
 
               }
