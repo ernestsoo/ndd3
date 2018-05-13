@@ -4,8 +4,12 @@ var height = 900;
 var radius = 55;
 
 
+
+
 $( document ).ready(function() {
 
+    $(".img-bg").css("width",$('.main').width());
+    $(".img-bg").css("height","2000px");
     // 200px worth of side paddings total
     width = $(window).width() - 200;
 
@@ -19,10 +23,18 @@ $( document ).ready(function() {
     $('.svg-con').css("margin-left","100px");
 
 
-    var btn_margin_center = ($(window).width() - $('.play-btn-group').width()) / 2;
+    var title_margin_center = ($(window).width() - $('.app-title').width()) / 2;
 
-    $('.play-btn-group').css("margin-left",btn_margin_center.toString()+"px");
+    $('.app-title').css("margin-left",title_margin_center.toString()+"px");
+
+    var tools_margin_left = title_margin_center - $('.app-title').width() + 150;
+
+    $('.app-tools').css("margin-left",tools_margin_left.toString()+"px");
+
+
+
 });
+
 
 
 var color = d3.scale.category10();
@@ -42,9 +54,11 @@ var links_array = [];
 var json_obj_array = [];
 
 
-var show_new_coins =["bitcoin_price","iota_price","ripple_price","ethereum_price","litecoin_price","neo_price","omisego_price"];
+// Array of datasets to be imported
+var show_new_coins = ["bitcoin_price","iota_price","ripple_price","ethereum_price","litecoin_price","neo_price","omisego_price","waves_price", "stratis_price", "qtum_price", "bitconnect_price", "dash_price"];
 
-var show_new_coins_names = ["BTC","IOTA","XRP","ETH","LTC","NEO","OMG"];
+// Explicitly define SYMBOL for each dataset entry
+var show_new_coins_names = ["BTC","IOTA","XRP","ETH","LTC","NEO","OMG","WAVES","STRAT","QTUM","BCC","DASH"];
 
 for (var i=0; i<30; i++)
 {
@@ -65,6 +79,13 @@ var iteration_counter=0;
 
 var date_counter = 1;
 
+
+// Get the Max for Scales
+var max_link = [];
+var max_radius = [];
+
+
+
 var parse_new_complete = function(results)
 {
 
@@ -73,10 +94,18 @@ var parse_new_complete = function(results)
 
      var percent_variable;
 
+
+     var parse_date_zero = "0";
+
      for (var key in results.data) {
             if (dataset.hasOwnProperty(key)) {
 
-                if(dataset[key].Date.toString() == "Jan 0"+date_counter.toString()+", 2018")
+                if (date_counter > 9)
+                {
+                    parse_date_zero = "";
+                }
+
+                if(dataset[key].Date.toString() == "Jan "+parse_date_zero.toString()+date_counter.toString()+", 2018")
                 {
 
                    var date_temp = date_counter - 1;
@@ -115,9 +144,11 @@ var parse_new_complete = function(results)
                      json_obj[date_temp].links.push({"source":iteration_counter ,"target":0, "value":relativity_value, "weight": 1});
                    }
 
+                   max_link.push(relativity_value);
+
 
                      // Increment to the next day
-                     if(date_counter < 8)
+                     if(date_counter < 29)
                      {
 
                        date_counter = date_counter + 1;
@@ -125,10 +156,18 @@ var parse_new_complete = function(results)
                      }
 
 
-                     if(date_counter == 8)
+                     if(date_counter == 29)
                      {
                         date_counter = 1;
                      }
+
+                     // Negate
+                     if (percent_variable < 0)
+                     {
+                         percent_variable = 0 - percent_variable;
+                     }
+
+                     max_radius.push(percent_variable);
 
                 }
 
@@ -225,10 +264,20 @@ var parse_complete = function(results)
 
 
 
+
+
                     console.log({"source":{name: dataset[key].symbol, group: temp, percentage: percent_variable}, "target":1, "value":relativity_value, "weight": 1})
 
                     //increment temp
                     temp = temp + 1;
+
+                    // Negate
+                    if (percent_variable < 0)
+                    {
+                        percent_variable = 0 - percent_variable;
+                    }
+
+
                 }
             }
 
@@ -238,7 +287,6 @@ var parse_complete = function(results)
 
 
     console.log(json_obj);
-
 
      // For debugging purposes
      json_obj.links.forEach(function(link, index, list) {
@@ -256,7 +304,6 @@ var parse_complete = function(results)
 
     // Draw Force Graph
     init_force();
-
 }
 
 for (var i=0; i<show_new_coins.length; i++)
@@ -273,20 +320,6 @@ for (var i=0; i<show_new_coins.length; i++)
 
 
 
-
-
-
-// Derive the link distance based on the derived variable
-var link_distance = function(d)
-{
-    console.log("QUICK MATHS");
-    console.log(d.value);
-    console.log(Math.log(1+d.value) * 100);
-    // Value of relativity mutiplied by scale (150)
-    return 100 + (Math.log(1+d.value) * 100);
-}
-
-
 // global variable to be used by init and update function
 var force = d3.layout.force();
 var force1 = d3.layout.force();
@@ -295,6 +328,54 @@ var force1 = d3.layout.force();
 // Encapsulated Function to start force graph
 var init_force = function(dataset)
 {
+  console.log(max_link);
+  console.log("MAX MAX", d3.max(max_link));
+
+
+  var linkScale = d3.scale.linear()
+                      .domain([0, 25])
+                      .range([100, 550]);
+
+  var radiusScale = d3.scale.linear()
+                        .domain([0, Math.log(d3.max(max_radius)+1)])
+                        .range([20,100]);
+
+
+  console.log("Answ", linkScale(Math.log("40")) );
+
+  // Derive the link distance based on the derived variable
+  function link_distance(d)
+  {
+      console.log("QUICK MATHS");
+      console.log(d.value);
+      console.log(Math.log(1+d.value) * 100);
+      // Value of relativity mutiplied by scale (150)
+    //  alert(d.value)
+    //  alert(linkScale(10));
+      console.log("SCALE", linkScale(Math.log(1+d.value)));
+
+      var bool_btc = false;
+      var bool_source = false;
+
+      if(d.target.percentage > 0)
+      {
+          bool_btc = true;
+      }
+
+      if(d.source.percentage > 0)
+      {
+          bool_source = true;
+      }
+
+      if(bool_btc == bool_source)
+      {
+            return linkScale(d.value);
+      }else{
+            return 200 + linkScale(d.value);
+      }
+  }
+
+
     // Set up force graph
     force
         .charge(-1000)
@@ -306,119 +387,14 @@ var init_force = function(dataset)
         .links(dataset[0].links)
         .start();
 
-    force1
-        .charge(-100)
-        .gravity(0)
-        .linkDistance(link_distance)
-        .size([width, height])
-        .nodes(dataset[1].nodes)
-        .links(dataset[1].links)
-        .start();
-
-
-/*
-    setTimeout(function(){
-        force.nodes(dataset[1].nodes).links(dataset[1].links);
-
-        nodes.data(force.nodes())
-        .enter().append("circle")
-        .attr("class", "node")
-        .attr("r", function(d){
-            console.log("NODE:");
-            console.log(d.percentage);
-
-            var p_temp = d.percentage;
-            var pi = 3.14159;
-            var scale = 5000;
-
-            if (p_temp < 0)
-            {
-                p_temp = 0 - p_temp;
-            }
-
-            // Multiply percentage with a scale
-            return + Math.sqrt(p_temp * scale / pi);
-        })
-        .style("fill", function(d)
-        {
-            if(d.name == "BTC")
-            {
-                return '#0069d9';
-            }else
-            {
-
-                if(d.percentage > 0)
-                {
-                    return '#28a745';
-                }
-                else{
-                    return '#dc3545';
-                }
-
-            }
-        })
-        //drag
-        .call(force.drag);
-        links.data(force.links())
-              .enter().append("line")
-              .attr("class", function(d)
-                    {console.log("lineeee");
-                     console.log(d.source.percentage);
-
-                     var bool_btc = false;
-                     var bool_source = false;
-
-                     if(d.target.percentage > 0)
-                     {
-                         bool_btc = true;
-                     }
-
-
-                     if(d.source.percentage > 0)
-                     {
-                         bool_source = true;
-                     }
-
-                     if(bool_btc == bool_source)
-                     {
-                         return "link";
-                     }else{
-                         return null;
-                     }
-              });
-
-
-              force.on("tick", function() {
-                  links.attr("x1", function(d) { return d.source.x; })
-                  .attr("y1", function(d) { return d.source.y; })
-                  .attr("x2", function(d) { return d.target.x; })
-                  .attr("y2", function(d) { return d.target.y; });
-
-
-                  nodes.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-                  .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
-
-                  texts.attr("x", function(d) { return d.x - 11; })
-                  .attr("y", function(d) { return d.y - 4; });
-
-                  percentages.attr("x", function(d) { return d.x - 13; })
-                  .attr("y", function(d) { return d.y + 7; });
-
-                  });
-
-
-
-
-
-    },2000);*/
 
     var links = svg.append("g").selectAll("line.link")
     .data(force.links())
     .enter().append("line")
-    .attr("class", function(d)
-          {console.log("lineeee");
-           console.log(d.source.percentage);
-
+    .attr("id", function(d,i){
+          return "link-" + i.toString();
+    })
+    .attr("class", function(d){
            var bool_btc = false;
            var bool_source = false;
 
@@ -426,7 +402,6 @@ var init_force = function(dataset)
            {
                bool_btc = true;
            }
-
 
            if(d.source.percentage > 0)
            {
@@ -463,7 +438,7 @@ var init_force = function(dataset)
         }
 
         // Multiply percentage with a scale
-        return + Math.sqrt(p_temp * scale / pi);
+        return radiusScale(Math.log(p_temp+1));
     })
     .style("fill", function(d,i)
     {
@@ -474,7 +449,6 @@ var init_force = function(dataset)
             return '#0069d9';
         }else
         {
-
             if(d.percentage > 0)
             {
                 return '#28a745';
@@ -482,7 +456,6 @@ var init_force = function(dataset)
             else{
                 return '#dc3545';
             }
-
         }
     })
     //drag
@@ -506,13 +479,14 @@ var init_force = function(dataset)
     .data(force.nodes())
     .enter().append("text")
     .attr("class", "label")
+    .attr("id",function(d,i){
+        return "label-" + i.toString();
+    })
     .attr("fill","white")
     .text(function(d) {
         var n = parseFloat(d.percentage).toFixed(2);
         return n.toString() + "%" })
             .call(force.drag);
-
-
 
             force.on("tick", function() {
                 links.attr("x1", function(d) { return d.source.x; })
@@ -549,6 +523,9 @@ var init_force = function(dataset)
                 .attr("y", function(d) { return d.y + 7; });
 
                 });
+
+
+
         /*
 
         setTimeout(function(){
@@ -566,33 +543,95 @@ var init_force = function(dataset)
         },1100);*/
 
 
-         setTimeout(function(){
-           update_force(1);
-         },1100);
 
-         setTimeout(function(){
-           update_force(2);
-         },2200);
 
-         setTimeout(function(){
-           update_force(3);
-         },3300);
+         var interval = 2000;
+         var duration = 1000;
 
-         setTimeout(function(){
-           update_force(4);
-         },4400);
+         for (var i=1; i<28; i++)
+         {
+            eval("setTimeout(function(){update_force("+i.toString()+");},"+duration.toString()+");");
 
-         setTimeout(function(){
-           update_force(5);
-         },5500);
+            duration = duration + interval;
+         }
+
 
 
 
 
 
        function update_force(index){
+
+         console.log("JSON OBJ!", json_obj);
+         console.log(json_obj[index].links);
+
+         for(var i=0; i< json_obj[index].links.length; i++)
+         {
+            d3.select("#link-" + i.toString()).classed("link",false);
+
+            var bool_btc = false;
+            var bool_source = false;
+
+            console.log(json_obj[index].links);
+
+            if(json_obj[index].nodes[0].percentage > 0)
+            {
+                  bool_btc = true;
+            }
+
+
+            console.log("number", json_obj[index].links[i].source.group);
+
+            var source_temp = [];
+
+            if (typeof json_obj[index].links[i].source == "number")
+            {
+                  source_temp = json_obj[index].links[i].source;
+            }else{
+                  source_temp = json_obj[index].links[i].source.group;
+            }
+
+            console.log("Source_Temp", source_temp);
+
+            if(json_obj[index].nodes[source_temp].percentage > 0)
+            {
+                  bool_source = true;
+            }
+
+            if(bool_btc == bool_source)
+            {
+                  console.log('true'+i,json_obj[index].links[i].source.percentage);
+                  d3.select("#link-" + i.toString()).classed("link",true);
+            }else{
+                  d3.select("#link-" + i.toString()).classed("link",false);
+            }
+         }
+
+
           force
             .linkDistance(function(d,i){
+
+              var bool_btc = false;
+              var bool_source = false;
+
+              if(json_obj[index].links[i].target.percentage > 0)
+              {
+                  bool_btc = true;
+              }
+
+              if(json_obj[index].links[i].source.percentage > 0)
+              {
+                  bool_source = true;
+              }
+
+              if(bool_btc == bool_source)
+              {
+                  return linkScale(json_obj[index].links[i].value);
+              }else{
+                  return 200 + linkScale(json_obj[index].links[i].value);
+              }
+
+
               return 100 + (Math.log(1+json_obj[index].links[i].value) * 100);
             }).start();
 
@@ -609,32 +648,40 @@ var init_force = function(dataset)
                 p_temp = 0 - p_temp;
             }
 
+            // Change radius of node
+            d3.select("#circle-" + i.toString()).attr("r",radiusScale(Math.log(p_temp+1)));
 
-            d3.select("#circle-"+i.toString()).attr("r",Math.sqrt(p_temp * scale / pi));
+            // Change text of node
+            d3.select("#label-" + i.toString()).text(json_obj[index].nodes[i].percentage.toFixed(2) + "%");
           }
 
           // Update and Transition Links
-          for (var i=0; i< json_obj[index].links.length; i++)
+          for (var i=0; i< json_obj[index].nodes.length; i++)
           {
-                  alert(called)
-            if(json_obj[index].links[i].name == "BTC")
+
+            console.log("name", json_obj[index].links[i] )
+            if(json_obj[index].nodes[i].name == "BTC")
             {
 
 
                 d3.select("#circle-"+i.toString()).attr("class","class-blue");
+
+                //$("#circle-"+i.toString()).css("fill","#0069d9");
             }else
             {
-
-                if(json_obj[index].links[i].percentage > 0)
+                if(json_obj[index].nodes[i].percentage > 0)
                 {
-                      d3.select("#circle-"+i.toString()).attr("class","class-blue");
+                     d3.select("#circle-"+i.toString()).attr("class","class-green");
+                    //  $("#circle-"+i.toString()).css("fill","#0069d9");
                 }
-                else{
-                      d3.select("#circle-"+i.toString()).attr("class","class-red");
+                else{;
+                     d3.select("#circle-"+i.toString()).attr("class","class-red");
+                    //  $("#circle-"+i.toString()).css("fill","#0069d9");
                 }
-
             }
           }
+
+
 
 
         };
