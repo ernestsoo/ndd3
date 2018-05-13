@@ -1,9 +1,100 @@
 
+.img-bg
+{
+  background: #005AA7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #FFFDE4, #005AA7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #FFFDE4, #005AA7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  z-index: -1000;
+  position: absolute;
+}
 
-
+.modal-title
+{
+  display:inline-block !important;
+}
 .text
 {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
+}
+
+.animation-date-con
+{
+  width: 300px;
+}
+
+.animation-date
+{
+  border-radius: 15px;
+  background: rgba(169,169,169,0.35);
+  width:160px;
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  z-index: 100;
+  margin-top: 15px;
+}
+
+.inline-block
+{
+  display:inline-block;
+}
+
+.cursor-pointer
+{
+  cursor:pointer;
+}
+
+.hover-name
+{
+  z-index: 100;
+  fill:black;
+}
+.hover-details
+{
+
+  fill: rgba(0,0,0,0.75);
+
+}
+
+.left-details
+{
+  float:left;
+  display:inline-block;
+  width:100px;
+}
+
+.right-details
+{
+  float:right;
+  display:inline-block;
+}
+
+.hover-text
+{
+  color:white;
+}
+
+.class-blue
+{
+    fill: rgb(0, 105, 217) !important;
+}
+
+.class-red
+{
+    fill: rgb(220, 53, 69) !important;
+}
+
+.class-green
+{
+    fill: rgb(40, 167, 69) !important;
+}
+
+circle
+{
+  -webkit-transition: r 1s ease-out;
+  -moz-transition: r 1s ease-out;
+  -o-transition: r 1s ease-out;
+  transition: r 1s ease-out, fill 1s ease-out;
 }
 
 
@@ -20,15 +111,31 @@ circle.node_invisible {
     width:0px;
 }
 
+
+line
+{
+
+  -moz-transition: opacity 1s ease-out;
+  -webkit-transition: opacity 1s ease-out;
+  -o-transition: opacity 1s ease-out;
+  transition:  opacity 1s ease-out;
+
+
+}
+
 line.link {
     stroke-width: 2px;
     stroke: #999;
     stroke-opacity: 0.6;
+
+    -webkit-transition: all 2s ease-out;
+   -moz-transition: all 2s ease-out;
+   -o-transition: all 2s ease-out;
+   transition: all 2s ease-out;
 }
 
 line_invisible.link {
     stroke-width: 0px;
-
 }
 
 
@@ -43,37 +150,36 @@ text.label {
      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
      font-size:9.5px;
      font-weight:bold;
-     
+
    /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff; */
 }
 
 text.percentage {
   /*  font: 10px sans-serif; */
      color: white;
-     
+
      font-size:9.5px;
      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
 
-
+/*
 .svg-con
 {
   display: inline-block;
-  position: relative;    
-  margin-top:35px;
-}
+  position: relative;
+  margin-top: 35px;
+}*/
 
-.svg-con::before
+body::before
 {
   content: "";
   display: block;
   position: absolute;
   z-index: -1;
   width: 100%;
-  height: 100%;
+  height: 2000px;
   background:white;
   opacity: .3;
-  border-radius: 25px;
 }
 
 .nd-label
@@ -84,6 +190,19 @@ text.percentage {
     border-radius: 15px;
 }
 
+.icons
+{
+    width:40px;
+    height:40px;
+    position: relative;
+    cursor: pointer;
+}
+
+.help-icon
+{
+    width: 22px;
+    height: 22px;
+}
 
 
 
@@ -105,7 +224,7 @@ text.percentage {
   position: absolute;
   top: 0;
   left: 0;
-  
+
   -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
   animation: sk-cubemove 1.8s infinite ease-in-out;
 }
@@ -123,21 +242,32 @@ text.percentage {
 }
 
 @keyframes sk-cubemove {
-  25% { 
+  25% {
     transform: translateX(42px) rotate(-90deg) scale(0.5);
     -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5);
-  } 50% { 
+  } 50% {
     transform: translateX(42px) translateY(42px) rotate(-179deg);
     -webkit-transform: translateX(42px) translateY(42px) rotate(-179deg);
-  } 50.1% { 
+  } 50.1% {
     transform: translateX(42px) translateY(42px) rotate(-180deg);
     -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg);
-  } 75% { 
+  } 75% {
     transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
     -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5);
-  } 100% { 
+  } 100% {
     transform: rotate(-360deg);
     -webkit-transform: rotate(-360deg);
   }
 }
 
+.tutorial-shade
+{
+    background: rgba(0,0,0,0.8);
+    z-index: 10000;
+    position: absolute;
+}
+
+.tutorial-0
+{
+    z-index:100000;
+}
