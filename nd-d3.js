@@ -38,7 +38,7 @@ $( document ).ready(function() {
 
     $('.app-tools').css("margin-left",tools_margin_left.toString()+"px");
 
-    $('#settings').css("left",title_margin_center.toString()+"px");
+    $('#histogram').css("left",title_margin_center.toString()+"px");
     title_margin_center = title_margin_center + 450;
 
     $('#tutorial-0').css("top","20px");
@@ -121,7 +121,13 @@ var is_update = false;
 
 
 
+var histogram_array = [];
 
+for(var i=0; i<show_new_coins.length; i++)
+{
+    histogram_array[i] = {};
+    histogram_array[i].value = 0;
+}
 
 var year_array = ["2017","2017","2017","2018","2018"];
 
@@ -181,7 +187,6 @@ var down_date = function()
 
 var change_date = function()
 {
-
    force = d3.layout.force();
 
    is_update = true;
@@ -364,6 +369,9 @@ var parse_new_complete = function(results)
   var tutorial3_int = false;
 
   var tutorial_counter=0;
+
+
+
         // TUTORIAL 0
         function tutorial0()
         {
@@ -445,7 +453,13 @@ var parse_new_complete = function(results)
         var animation_counter = 1;
 
 
+        function histogram_close()
+        {
+          $('#histogram').css("display","none");
+          $(".tutorial-shade").css("display","none");
 
+          $(".svg-con").css("z-index", 1000001);
+        }
 
 
 
@@ -554,7 +568,7 @@ var init_force = function(dataset)
     .attr("id", function(d,i){
           return "link-" + i.toString();
     })
-    .attr("class", function(d){
+    .attr("class", function(d,i){
            var bool_btc = false;
            var bool_source = false;
 
@@ -570,7 +584,9 @@ var init_force = function(dataset)
 
            if(bool_btc == bool_source)
            {
+               histogram_array[i].value = histogram_array[i].value + 1;
                return "link";
+
            }else{
                return null;
            }
@@ -1050,6 +1066,18 @@ var init_force = function(dataset)
 
 
 
+                function histogram_run()
+                {
+                  $('#histogram').css("display","unset");
+                  $('.help-icon').css("z-indez","10000")
+                  $(".tutorial-shade").css("display","initial");
+
+                  $(".svg-con").css("z-index", -1);
+                  console.log("HHH",histogram_array);
+                  runHistogram();
+
+                }
+
 
 
               var play_animation = function()
@@ -1063,6 +1091,11 @@ var init_force = function(dataset)
                     $('.animation-date').text(temp.toString()+" "+month+" 2018");
 
                      animation_counter = animation_counter + 1;
+
+                     if(animation_counter == 27)
+                     {
+                        histogram_run();
+                     }
                 }
 
                 if(animation_stop_bool)
@@ -1072,6 +1105,8 @@ var init_force = function(dataset)
                     animation_stop_bool = false;
 
                     $('.animation-date').text("1 "+month+" "+year);
+
+                    histogram_run();
                 }
 
               }
@@ -1086,6 +1121,8 @@ var init_force = function(dataset)
 
 
        function update_force(index){
+
+         d3.select("#cloud1").remove();
 
          console.log("JSON OBJ!", json_obj);
          console.log(json_obj[index].links);
@@ -1126,7 +1163,10 @@ var init_force = function(dataset)
             if(bool_btc == bool_source)
             {
                   console.log('true'+i,json_obj[index].links[i].source.percentage);
+                  histogram_array[i+1].value = histogram_array[i+1].value + 1;
                   d3.select("#link-" + i.toString()).classed("link",true);
+
+                  console.log("Histrogram ARR", histogram_array );
             }else{
                   d3.select("#link-" + i.toString()).classed("link",false);
             }
@@ -1156,7 +1196,6 @@ var init_force = function(dataset)
                   return 200 + linkScale(json_obj[index].links[i].value);
               }
 
-
               return 100 + (Math.log(1+json_obj[index].links[i].value) * 100);
             }).start();
 
@@ -1176,8 +1215,12 @@ var init_force = function(dataset)
             // Change radius of node
             d3.select("#circle-" + i.toString()).attr("r",radiusScale(Math.log(p_temp+1)));
 
+            // Update First Nodes
+
+            $("#label-" + i.toString()).text(json_obj[index].nodes[i].percentage.toFixed(2) + "%");
+
             // Change text of node
-            d3.select("#label-" + i.toString()).text(json_obj[index].nodes[i].percentage.toFixed(2) + "%");
+            //d3.select("#label-" + i.toString()).text(json_obj[index].nodes[i].percentage.toFixed(2) + "%");
           }
 
           // Update and Transition Links
@@ -1205,11 +1248,71 @@ var init_force = function(dataset)
                 }
             }
           }
-
-
-
-
         };
+
+
+
+
+
+        function runHistogram()
+        {
+
+          histogram_array.shift();
+          console.log("inserted", histogram_array)
+          var margin = {top: 20, right: 30, bottom: 30, left: 40},
+          h_width = 450 - margin.left - margin.right,
+          h_height = 500 - margin.top - margin.bottom;
+
+          var x = d3.scale.ordinal()
+              .rangeRoundBands([0, h_width], .1);
+
+          var y = d3.scale.linear()
+              .range([h_height, 0]);
+
+          var xAxis = d3.svg.axis()
+              .scale(x)
+              .orient("bottom");
+
+          var yAxis = d3.svg.axis()
+              .scale(y)
+              .orient("left");
+
+          var chart = d3.select(".chart")
+              .attr("width", h_width + margin.left + margin.right)
+              .attr("height", h_height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+          x.domain(["IOTA","XRP","ETH","LTC","NEO","OMG","WAVES","STRAT","QTUM","BCC","DASH"]);
+          y.domain([0, d3.max(histogram_array, function(d) { return d.value; })]);
+
+          chart.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + h_height + ")")
+              .call(xAxis);
+
+          chart.append("g")
+              .attr("class", "y axis")
+              .call(yAxis);
+
+          chart.selectAll(".bar")
+              .data(histogram_array)
+            .enter().append("rect")
+              .attr("class", "bar")
+              .attr("x", function(d,i) { return x(["IOTA","XRP","ETH","LTC","NEO","OMG","WAVES","STRAT","QTUM","BCC","DASH"][i]); })
+              .attr("y", function(d) { return y(d.value); })
+              .attr("height", function(d) { alert(d.value); return h_height - y(d.value); })
+              .attr("width", x.rangeBand());
+
+
+
+          function type(d) {
+            d.value = +d.value; // coerce to number
+            return d;
+          }
+
+        }
 
 
 

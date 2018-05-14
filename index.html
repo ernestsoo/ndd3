@@ -60,6 +60,22 @@
               <img class="icons inline=block" src="svg/right-chevron1.svg" style="margin-left:10px;" onclick="up_date()"/>
             </div>
 
+
+            <div id="histogram" class="modal-content" style="width:32%;position:fixed;top:140px;display:none;z-index:100000">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Visualization Summary</h5>
+                  </div>
+                  <div class="modal-body">
+                    <p>Here is a histogram to look at the number of days each coin had the same trend as Bitcoin:</p>
+
+                    <svg class="chart"></svg>
+                  </div>
+                  <div class="modal-footer">
+
+                    <button type="button" class="btn btn-success" onclick="histogram_close()" >Got It!</button>
+                  </div>
+            </div>
+
             <div id="tutorial-0" class="modal-content" style="width:30%;position:fixed;top:140px;display:none;z-index:100000">
                   <div class="modal-header">
                     <h5 class="modal-title">Tutorial</h5>
