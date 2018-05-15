@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <meta http-equiv="content-type" content="text/html;charset=utf-8">
         <title>Network Diagram d3</title>
         <script src="https://d3js.org/d3.v3.js"></script>
@@ -11,6 +12,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        
+        <!-- Raleway -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        
     </head>
     <body style="position:relative">
 
@@ -47,9 +52,9 @@
 
             <div class="app-tools" style="margin: 0 auto;display:inline-block;position:relative;z-index:0">
 
-              <img class="icons" src="svg/play-button.svg" onclick="animation_bool = true"></img>
-              <img class="icons" src="svg/pause.svg" onclick="animation_bool = false"></img>
-              <img class="icons" src="svg/stop.svg" onclick="animation_stop_bool = true; animation_bool = false;"></img>
+              <img class="icons icons-play" src="svg/play-button.svg" onclick="animation_bool = true" />
+              <img class="icons icons-pause" src="svg/pause.svg" onclick="animation_bool = false" style="display:none;" />
+              <img class="icons icons-stop" src="svg/stop.svg" onclick="animation_stop_bool = true; animation_bool = false;" />
 
             </div>
 
@@ -61,7 +66,7 @@
             </div>
 
 
-            <div id="histogram" class="modal-content" style="width:32%;position:fixed;top:140px;display:none;z-index:100000">
+            <div id="histogram" class="modal-content" style="width:33.5%;position:fixed;top:140px;display:none;z-index:100000">
                   <div class="modal-header">
                     <h5 class="modal-title">Visualization Summary</h5>
                   </div>
@@ -183,7 +188,7 @@
             </div>
 
 
-            <svg id="cloud1" width="500" height="750" style="position:relative; z-index:100000;display:none">
+            <svg id="cloud1" width="500" height="680" style="position:relative; z-index:100000;display:none">
                 <defs>
                     <marker id="arrow" viewbox="0 -5 10 10" refX="18" refY="0"
                             markerWidth="6" markerHeight="6" orient="auto">
@@ -226,10 +231,10 @@
                   <div class="cube1"></div>
                   <div class="cube2"></div>
                 </div>
-                <p class="text text-center" style="color:white">Please wait while we crunch some data.</p>
+                <p class="text text-center" style="color:black">Please wait while we crunch some data.</p>
             </div>
 
-            <svg id="cloud" width="0" height="750" style="position:relative; z-index:1;display:none">
+            <svg id="cloud" width="0" height="680" style="position:relative; z-index:1;display:none">
                 <defs>
                     <marker id="arrow" viewbox="0 -5 10 10" refX="18" refY="0"
                             markerWidth="6" markerHeight="6" orient="auto">

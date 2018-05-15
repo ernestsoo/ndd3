@@ -1,6 +1,6 @@
 // Dimension of Visualization
 var width = 0;
-var height = 750;
+var height = 680;
 var radius = 55;
 
 
@@ -40,6 +40,8 @@ $( document ).ready(function() {
 
     $('#histogram').css("left",title_margin_center.toString()+"px");
     title_margin_center = title_margin_center + 450;
+    
+    $('#histogram').css("top","15px");
 
     $('#tutorial-0').css("top","20px");
     $('#tutorial-1').css("top","20px");
@@ -58,7 +60,25 @@ $( document ).ready(function() {
 
 
     $('#tutorial-4').css("left",title_margin_center.toString()+"px");
-
+    
+    
+    $(".icons-play").on("click",function(){
+        
+        $(".icons-pause").css("display","initial");
+        $(".icons-play").css("display","none");
+    });
+    
+    $(".icons-pause").on("click",function(){
+        
+        $(".icons-pause").css("display","none");
+        $(".icons-play").css("display","initial");
+    });
+    
+    $(".icons-stop").on("click",function(){
+        
+        $(".icons-pause").css("display","none");
+        $(".icons-play").css("display","initial");
+    });
 
 });
 
@@ -1302,7 +1322,7 @@ var init_force = function(dataset)
               .attr("class", "bar")
               .attr("x", function(d,i) { return x(["IOTA","XRP","ETH","LTC","NEO","OMG","WAVES","STRAT","QTUM","BCC","DASH"][i]); })
               .attr("y", function(d) { return y(d.value); })
-              .attr("height", function(d) { alert(d.value); return h_height - y(d.value); })
+              .attr("height", function(d) {return h_height - y(d.value); })
               .attr("width", x.rangeBand());
 
 
