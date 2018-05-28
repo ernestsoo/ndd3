@@ -7,6 +7,12 @@ var radius = 55;
 
 
 $( document ).ready(function() {
+
+  initJQuery();
+
+  /** The Function below is used to set the margin of some dom element using the JQuery Frameowrk **/
+  function initJQuery()
+  {
     $(".img-bg").css("width",$('.main').width());
     $(".img-bg").css("height","2000px");
     // 200px worth of side paddings total
@@ -26,8 +32,6 @@ $( document ).ready(function() {
     $(".animation-date-con").css("margin-left", animation_center.toString()+"px");
 
 
-
-
     var title_margin_center = ($(window).width() - $('.app-title').width()) / 2;
 
     $('.app-title').css("margin-left",title_margin_center.toString()+"px");
@@ -40,7 +44,7 @@ $( document ).ready(function() {
 
     $('#histogram').css("left",title_margin_center.toString()+"px");
     title_margin_center = title_margin_center + 450;
-    
+
     $('#histogram').css("top","15px");
 
     $('#tutorial-0').css("top","20px");
@@ -60,25 +64,32 @@ $( document ).ready(function() {
 
 
     $('#tutorial-4').css("left",title_margin_center.toString()+"px");
-    
-    
+
+
     $(".icons-play").on("click",function(){
-        
+
         $(".icons-pause").css("display","initial");
         $(".icons-play").css("display","none");
     });
-    
+
     $(".icons-pause").on("click",function(){
-        
+
         $(".icons-pause").css("display","none");
         $(".icons-play").css("display","initial");
     });
-    
+
     $(".icons-stop").on("click",function(){
-        
+
         $(".icons-pause").css("display","none");
         $(".icons-play").css("display","initial");
     });
+
+    }
+
+    $( window ).resize(function() {
+        // Perform this function everytime the window is resize
+        initJQuery();
+  });
 
 });
 
@@ -149,10 +160,11 @@ for(var i=0; i<show_new_coins.length; i++)
     histogram_array[i].value = 0;
 }
 
+// These variable are used to store the months available.
 var year_array = ["2017","2017","2017","2018","2018"];
-
 var month_array = ["Oct","Nov","Dec","Jan","Feb"];
 
+// This variable is used to keep track of the month currently selected in the datepicker
 var date_array_counter = 3;
 
 var year = year_array[date_array_counter];
@@ -172,7 +184,7 @@ var close_settings = function()
   $("#settings").css("display","none");
 }
 
-
+// This function is used to increment the month using the date picker.
 var up_date = function()
 {
 
@@ -189,7 +201,7 @@ var up_date = function()
   }
 }
 
-
+// This function is used to decrement the month using the date picker.
 var down_date = function()
 {
     date_array_counter = date_array_counter - 1;
